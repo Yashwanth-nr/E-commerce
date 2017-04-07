@@ -1,0 +1,12 @@
+<h2> listing your reviews</h2>
+
+<ul>
+<% @review.each do |review| %>
+<li> <p> Product-- <%= review.product.name %></p>
+<p> (review)--<%= review.title %> <%= review.body %>
+
+  <%= link_to "deletereview", review_path(review) ,method:  :delete, data:{confirm: "are  u sure?"}%>
+
+</li>
+<% end %>
+</ul>

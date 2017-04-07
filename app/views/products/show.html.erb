@@ -1,0 +1,125 @@
+<p id="notice"><%= notice %></p>
+
+<% if @product.cover_url.nil? %>
+
+      <%= image_tag("/default_product.jpg", size: "100*100")%>
+
+      <%else%>
+
+      <%= image_tag(@product.cover_url, size: "100*100")%>
+
+      <%end%> 
+
+
+
+<p>
+
+  <strong>Category:</strong>
+  
+  <%# Category.find(@product.category_id).name %>
+  <%= link_to @product.category.name, category_path(@product.category_id) %>
+</p>
+
+<p>
+
+  <strong>Name:</strong>
+
+  <%= @product.name %>
+
+</p>
+
+<p>
+
+  <strong>Description:</strong>
+
+  <%= @product.description %>
+
+</p>
+
+<p>
+
+  <strong>Price:</strong>
+
+  <%= @product.price %>
+
+</p>
+
+<p>
+
+  <strong>Availabilty:</strong>
+
+  <%= @product.availabilty %>
+
+</p>
+
+<p>
+
+  <strong>Stock:</strong>
+
+  <%= @product.stock %>
+
+</p>
+
+
+<%= form_for Cart.new do |f| %>
+<%= f.hidden_field :product_id, value: @product.id %>
+<label>Quantity</label>
+<%= f.select :quantity, %w{1 2 3 4 5} %>
+<br/>
+<%= f.submit "Add to cart"%>
+<%end%>
+
+
+
+
+
+<% if @product.reviews.empty? %>
+    <h2> no reviews found </h2>
+    
+    <% else %>
+
+      <%reviews = @product.reviews.all %>
+      <h4> listing reviews</h4>
+      <ul>
+       <% reviews.each do |review| %> 
+
+         <li> <%= review.title %> </li>
+         <%= review.body %>
+       <% if user_signed_in? %>
+        <% if  review.user_id == current_user.id %>
+
+
+          <%= link_to "deletereview", review_path(review) ,method:  :delete, data:{confirm: "are  u sure?"}%>
+          <%= link_to "my review", review_path(current_user)%> 
+          <% end %>
+      <% end %>
+    <% end %>
+    </ul>
+  <% end %>
+
+  
+<%= form_for Review.new do |f| %>
+
+<%= f.label :review_product %><br/>
+     <%= f.text_field  :title %><br/>
+
+     <%= f.label :description %> <br/>
+     <%= f.text_area :body %> <br/>
+
+     <%= f.hidden_field :product_id, value: @product.id %> <br/>
+     
+      <%= f.submit "Add Review" %>
+
+     <% end %>
+
+
+
+
+
+<% if user_signed_in? && current_user.is_admin %>
+
+<%= link_to 'Edit', edit_product_path(@product) %>
+
+<%end%> |
+
+<%= link_to 'Back', products_path %>

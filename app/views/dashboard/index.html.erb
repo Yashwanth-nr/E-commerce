@@ -1,0 +1,16 @@
+<h2> Category Wise Products </h2>
+
+<% data= {} %>
+
+<% @categories.each do |category|
+	data[category.name] = category.products.size
+end %>
+
+<%= pie_chart(data) %>
+
+<%= column_chart(data) %>
+
+<%#= scatter_chart City.pluck(:size, :population), xtitle: "Size", ytitle: "Population" %>
+
+<%# bar_chart(data) %>
+
