@@ -5,7 +5,11 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     if params[:name]
-      @products= Product.where('name ILIKE ?',"%#{params[:name]}%")
+      if Rails.env.development?
+      @products= Product.where('name LIKE ?',"%#{params[:name]}%")
+       else
+        @products= Product.where('name ILIKE ?',"%#{params[:name]}%")
+      end
     else
 
 
