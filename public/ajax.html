@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ajax</title>
+</head>
+<body>
+	<h2> Ajax </h2>
+	<p id="here"></p>
+	<button id="load"> load data </button>
+	<a href="data.txt">View Text </a>
+
+<script>
+var hereHandle = document.getElementById('here');
+var loadHandle = document.getElementById('load');
+
+function callAjax(){
+var request = new XMLHttpRequest();
+request.open('GET','data.txt');
+request.onreadystatechange = function(){
+	if(request.readyState === 4 && request.status === 200){
+		hereHandle.innerHTML = request.responseText;
+	}
+}
+
+request.send();
+}
+
+loadHandle.onclick = function(){
+	callAjax()
+}
+
+</script>
+
+</body>
+</html>

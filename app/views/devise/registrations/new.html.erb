@@ -4,15 +4,73 @@
   <%= devise_error_messages! %>
 
   <div><%= f.label :email %><br />
-  <%= f.email_field :email, autofocus: true %></div>
+  <%= f.email_field :email, autofocus: true %>
+
+  <spam id="emailError"></spam>
+  </div>
 
   <div><%= f.label :password %> <% if @validatable %><i>(<%= @minimum_password_length %> characters minimum)</i><% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %></div>
+    <%= f.password_field :password, autocomplete: "off" %>
+    <spam id="passwordError"></spam>
+    </div>
 
   <div><%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    <spam id="passwordConfirmError"></spam>
+    </div>
 
-  <div><%= f.submit "Sign up" %></div>
+  <div><%= f.submit "Sign up" , id: "signup"%></div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+<script>
+	var passwordHandle = document.getElementById('user_password');
+	var passwordConfirmHandle = document.getElementById('user_password_confirmation');
+	var signupHandle = document.getElementById('signup');
+	var emailErrorHandle = document.getElementById('emailError');
+	var passwordErrorHandle = document.getElementById('passwordError');
+	var passwordConfirmErrorHandle = document.getElementById('passwordConfirmError');
+	var emailHandle = document.getElementById('user_email');
+
+
+	passwordHandle.onblur = function(){
+		if(passwordHandle.value.length < 4){
+			passwordErrorHandle.innerHTML = "wrong length";
+		}else {
+			passwordErrorHandle.innerHTML="";
+		}
+	}
+
+
+	signupHandle.disabled = true;
+
+	passwordConfirmHandle.onblur = function(){
+		if(passwordHandle.value !== passwordConfirmHandle.value){
+			passwordConfirmErrorHandle.innerHTML="passwords dont match";
+		}else{
+			passwordConfirmErrorHandle.innerHTML="";
+			signupHandle.disabled = false;
+		}
+	}
+
+
+	emailHandle.onblur = function(){
+		if (emailHandle.value == ""){
+			emailErrorHandle.innerHTML = "cant be blank";
+		}else{
+		var request = new XMLHttpRequest();
+		request.open('get','/api/check_email.json?email_id=' + emailHandle.value);
+		request.onreadystatechange = function(){
+      if(request.readyState === 4 && request.status === 200){
+        var response = JSON.parse(request.responseText).message;
+        emailErrorHandle.innerHTML = response ;
+
+        }
+
+	}
+	request.send();
+}
+}
+
+</script>

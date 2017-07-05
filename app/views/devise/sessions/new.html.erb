@@ -2,16 +2,56 @@
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div><%= f.label :email %><br />
-  <%= f.email_field :email, autofocus: true %></div>
+  <%= f.email_field :email, autofocus: true %>
+  <span id="emailErrors"> </span>
+  </div>
 
   <div><%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %></div>
+    <%= f.password_field :password, autocomplete: "off" %>
+    <span id="passwordErrors"></span>
+    </div>
 
   <% if devise_mapping.rememberable? -%>
     <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
   <% end -%>
 
-  <div><%= f.submit "Log in" %></div>
+  <div><%= f.submit "Log in", id: "submit" %></div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+<script>
+var submitHandle = document.getElementById('submit');
+var emailHandle = document.getElementById('user_email');
+var passwordHandle = document.getElementById('user_password');
+var emailErrorsHandle = document.getElementById('emailErrors');
+var passwordErrorsHandle = document.getElementById('passwordErrors');
+
+submitHandle.disabled = true;
+
+emailHandle.onblur = function(){
+	if(emailHandle.value == ""){
+
+		emailErrorsHandle.innerHTML = "cant be blank";
+	}else{
+		emailErrorsHandle.innerHTML = "";
+		submitHandle.disabled = false;
+	}
+};
+
+
+passwordHandle.onblur = function(){
+	if(passwordHandle.value == ""){
+		passwordErrorsHandle.innerHTML = "cant be blank";
+	}else if(passwordHandle.value <= 4){
+		passwordErrorsHandle.innerHTML="password is too short";
+	}else{
+		passwordErrorsHandle.innerHTML="";
+		submitHandle.disabled = false;
+
+	}
+}
+
+
+
+</script>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Zomato Listing</title>
+</head>
+<body>
+<h2> Listing cities <span id = "count"></span></h2>
+<ul id="city">
+</ul>
+
+<select id = "select">
+
+</select>
+
+<h2> Restaurants <span id = "restcount"> </span></h2>
+<ul id="restaurant">
+</ul>
+
+
+<script>
+var cityHandle = document.getElementById('city');
+var countHandle =document.getElementById('count');
+var restaurantHandle = document.getElementById('restaurant');
+var restcountHandle =document.getElementById('restcount');
+
+var selectHandle = document.getElementById('select');
+
+var restaurantResponse;
+
+
+var request = new XMLHttpRequest();
+request.open('GET','cities.json');
+request.onreadystatechange = function(){
+	if(request.readyState === 4 && request.status === 200){
+		var response = JSON.parse(request.responseText);
+		//console.log("Total cities is " + response.length);
+		
+		listCities(response);
+	}
+}
+
+request.send();
+
+var requestRest = new XMLHttpRequest();
+requestRest.open('GET','restaurants.json');
+requestRest.onreadystatechange = function(){
+	if(requestRest.readyState === 4 && requestRest.status === 200){
+		restaurantResponse = JSON.parse(requestRest.responseText);
+
+		//listRestaurants(restaurantResponse);
+	}
+}
+
+requestRest.send();
+
+function listCities(cities){
+	var citiesOutput = "";
+	cities.forEach(function(city){
+		var newElement = document.createElement('option');
+		var text = document.createTextNode(city.name);
+		newElement.appendChild(text);
+		newElement.setAttribute('value',city.id);
+			
+		selectHandle.appendChild(newElement);
+		citiesOutput += '<li>' + city.name + '</li>';
+
+
+	})
+	cityHandle.innerHTML = citiesOutput;
+	countHandle.innerHTML = cities.length;
+}
+
+// function selectRestaurant(){
+// 	var restOutput = ""
+// 	restOutput += 
+// }
+
+
+
+function listRestaurants(restaurants){
+	var restaurantsOutput = "";
+	var filteredRestaurants = restaurants.filter(function(restaurant){
+		return restaurant.city_id == selectOption;
+	})
+	filteredRestaurants.forEach(function(restaurant){
+		restaurantsOutput += '<li>' + restaurant.name + '</li>';
+	})
+	restaurantHandle.innerHTML = restaurantsOutput;
+	restcountHandle.innerHTML = filteredRestaurants.length;
+}
+
+var selectOption;
+selectHandle.onchange = function(){
+	selectOption = selectHandle.value;
+	listRestaurants(restaurantResponse);
+}
+
+
+
+</script>
+</body>
+</html>

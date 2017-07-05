@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'api/check_email'
+
   devise_for :users
   root to: "products#index"
 

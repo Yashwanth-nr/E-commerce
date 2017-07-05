@@ -1,0 +1,24 @@
+[
+	{
+		"id" : 1,
+		"city_id" : 1,
+		"name" : "Adigas"
+	},
+	{
+		"id" : 2,
+		"city_id" : 2,
+		"name" : "oye punjabi"
+	},
+	{
+		"id" : 3,
+		"city_id" : 3,
+		"name" : "Biriyani house"
+	},
+	{
+		"id" : 3,
+		"city_id" : 2,
+		"name" : " Hotel Siddartha"
+	}
+
+
+]

@@ -33,7 +33,7 @@ class CartsController < ApplicationController
 
 		@line_item= Cart.find(params[:id])
 		@line_item.destroy
-			redirect_to :back, notice: "Removed the prodcr from cart"
+			redirect_to :back, notice: "Removed the product from cart"
 
 		end
 

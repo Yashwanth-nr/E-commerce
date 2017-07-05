@@ -9,6 +9,6 @@ class Notification < ActionMailer::Base
   def order_confirmation(order)
     @order = order
 
-    mail to: @order.user.email, subject: "Oder confirmation #{@order.order_number}"
+    mail to: @order.user.email, subject: "Order confirmation #{@order.order_number}"
   end
 end
